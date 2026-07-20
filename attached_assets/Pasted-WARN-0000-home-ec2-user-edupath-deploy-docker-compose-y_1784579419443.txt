@@ -1,0 +1,66 @@
+WARN[0000] /home/ec2-user/edupath/deploy/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Building 8.7s (16/23)                                                                                                                                                                                                         
+ => [internal] load local bake definitions                                                                                                                                                                                   0.0s
+ => => reading from stdin 899B                                                                                                                                                                                               0.0s
+ => [api internal] load build definition from Dockerfile.api                                                                                                                                                                 0.1s
+ => => transferring dockerfile: 1.17kB                                                                                                                                                                                       0.0s
+ => [web internal] load build definition from Dockerfile.web                                                                                                                                                                 0.1s
+ => => transferring dockerfile: 978B                                                                                                                                                                                         0.0s
+ => [api internal] load metadata for docker.io/library/node:22-alpine                                                                                                                                                        0.5s
+ => [web internal] load metadata for docker.io/library/nginx:1.27-alpine                                                                                                                                                     0.5s
+ => [web internal] load .dockerignore                                                                                                                                                                                        0.0s
+ => => transferring context: 472B                                                                                                                                                                                            0.0s
+ => [api internal] load .dockerignore                                                                                                                                                                                        0.0s
+ => => transferring context: 472B                                                                                                                                                                                            0.0s
+ => [web internal] load build context                                                                                                                                                                                        0.2s
+ => => transferring context: 886.20kB                                                                                                                                                                                        0.1s
+ => [web builder 1/7] FROM docker.io/library/node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2                                                                                          3.7s
+ => => resolve docker.io/library/node:22-alpine@sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2                                                                                                      0.0s
+ => => sha256:16e22a550f3863206a3f701448c45f7912c6896a62de43add43bb9c86130c3e2 6.41kB / 6.41kB                                                                                                                               0.0s
+ => => sha256:b74031e546d7f4faf561d797ac1b76beccac856a042815ca77db4fd047581605 1.72kB / 1.72kB                                                                                                                               0.0s
+ => => sha256:bd168dc5d9d77ba5687dc7a31cc0f507c35b66c1d6af5f910154d3881df7c0ee 6.52kB / 6.52kB                                                                                                                               0.0s
+ => => sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801 52.31MB / 52.31MB                                                                                                                             0.9s
+ => => sha256:1d4d101ceaad39fb56dcac0bb6cc291e6cdec3b711786f0c82b050b5b5b85690 1.26MB / 1.26MB                                                                                                                               0.4s
+ => => sha256:d10ff586f6bdbdd6000a70a914e56bf05bedc78de3311d08a953643982d84e23 446B / 446B                                                                                                                                   0.4s
+ => => extracting sha256:3f4c164634d251a8b256151a9e1c1d3e5c5b21f1974f00a213875e66e3fa0801                                                                                                                                    2.5s
+ => => extracting sha256:1d4d101ceaad39fb56dcac0bb6cc291e6cdec3b711786f0c82b050b5b5b85690                                                                                                                                    0.1s
+ => => extracting sha256:d10ff586f6bdbdd6000a70a914e56bf05bedc78de3311d08a953643982d84e23                                                                                                                                    0.0s
+ => [web stage-1 1/2] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10                                                                                       2.1s
+ => => resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10                                                                                                   0.0s
+ => => sha256:61ca4f733c802afd9e05a32f0de0361b6d713b8b53292dc15fb093229f648674 1.79MB / 1.79MB                                                                                                                               0.2s
+ => => sha256:62223d644fa234c3a1cc785ee14242ec47a77364226f1c811d2f669f96dc2ac8 2.50kB / 2.50kB                                                                                                                               0.0s
+ => => sha256:6769dc3a703c719c1d2756bda113659be28ae16cf0da58dd5fd823d6b9a050ea 10.79kB / 10.79kB                                                                                                                             0.0s
+ => => sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 3.64MB / 3.64MB                                                                                                                               0.1s
+ => => sha256:b464cfdf2a6319875aeb27359ec549790ce14d8214fcb16ef915e4530e5ed235 629B / 629B                                                                                                                                   0.1s
+ => => sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 10.33kB / 10.33kB                                                                                                                             0.0s
+ => => extracting sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870                                                                                                                                    0.3s
+ => => sha256:d7e5070240863957ebb0b5a44a5729963c3462666baa2947d00628cb5f2d5773 955B / 955B                                                                                                                                   0.2s
+ => => sha256:81bd8ed7ec6789b0cb7f1b47ee731c522f6dba83201ec73cd6bca1350f582948 402B / 402B                                                                                                                                   0.2s
+ => => sha256:197eb75867ef4fcecd4724f17b0972ab0489436860a594a9445f8eaff8155053 1.21kB / 1.21kB                                                                                                                               0.2s
+ => => sha256:39c2ddfd6010082a4a646e7ca44e95aca9bf3eaebc00f17f7ccc2954004f2a7d 15.52MB / 15.52MB                                                                                                                             0.4s
+ => => sha256:34a64644b756511a2e217f0508e11d1a572085d66cd6dc9a555a082ad49a3102 1.40kB / 1.40kB                                                                                                                               0.2s
+ => => extracting sha256:61ca4f733c802afd9e05a32f0de0361b6d713b8b53292dc15fb093229f648674                                                                                                                                    0.1s
+ => => extracting sha256:b464cfdf2a6319875aeb27359ec549790ce14d8214fcb16ef915e4530e5ed235                                                                                                                                    0.0s
+ => => extracting sha256:d7e5070240863957ebb0b5a44a5729963c3462666baa2947d00628cb5f2d5773                                                                                                                                    0.0s
+ => => extracting sha256:81bd8ed7ec6789b0cb7f1b47ee731c522f6dba83201ec73cd6bca1350f582948                                                                                                                                    0.0s
+ => => extracting sha256:197eb75867ef4fcecd4724f17b0972ab0489436860a594a9445f8eaff8155053                                                                                                                                    0.0s
+ => => extracting sha256:34a64644b756511a2e217f0508e11d1a572085d66cd6dc9a555a082ad49a3102                                                                                                                                    0.0s
+ => => extracting sha256:39c2ddfd6010082a4a646e7ca44e95aca9bf3eaebc00f17f7ccc2954004f2a7d                                                                                                                                    0.9s
+ => [api internal] load build context                                                                                                                                                                                        0.3s
+ => => transferring context: 886.20kB                                                                                                                                                                                        0.2s
+ => [api builder 2/7] RUN corepack enable && corepack prepare pnpm@9 --activate                                                                                                                                              2.4s
+ => [api stage-1 2/3] WORKDIR /app                                                                                                                                                                                           0.2s
+ => [api builder 3/7] WORKDIR /app                                                                                                                                                                                           0.0s
+ => [api builder 4/7] COPY . .                                                                                                                                                                                               0.3s
+ => ERROR [api builder 5/7] RUN pnpm install --frozen-lockfile                                                                                                                                                               1.3s
+------
+ > [api builder 5/7] RUN pnpm install --frozen-lockfile:
+1.073 Scope: all 10 workspace projects
+1.275  ERR_PNPM_LOCKFILE_CONFIG_MISMATCH  Cannot proceed with the frozen installation. The current "overrides" configuration doesn't match the value found in the lockfile
+1.275 
+1.275 Update your lockfile using "pnpm install --no-frozen-lockfile"
+------
+[+] up 0/2
+ ⠙ Image deploy-api Building                                                                                                                                                                                                  8.7s
+ ⠙ Image deploy-web Building                                                                                                                                                                                                  8.7s
+target web: failed to solve: process "/bin/sh -c pnpm install --frozen-lockfile" did not complete successfully: exit code: 1
