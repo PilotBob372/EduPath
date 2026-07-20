@@ -171,7 +171,7 @@ router.post("/anthropic/conversations/:id/messages", async (req, res): Promise<v
   let fullResponse = "";
 
   const stream = anthropic.messages.stream({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-4-5",
     max_tokens: 8192,
     system: systemPrompt,
     messages: chatMessages,

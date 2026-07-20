@@ -117,7 +117,7 @@ router.post("/edu/recommendations", async (req, res): Promise<void> => {
 - Отвечай строго JSON, без markdown-блоков`;
 
   const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-4-5",
     max_tokens: 8192,
     messages: [{ role: "user", content: prompt }],
   });
@@ -189,7 +189,7 @@ mathLevel: "базовый" или "профильный"
 Пиши на русском, id от 1 до 4, matchScore от 0 до 100.`;
 
   const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-4-5",
     max_tokens: 8192,
     messages: [{ role: "user", content: prompt }],
   });
@@ -279,7 +279,7 @@ router.post("/edu/programs", async (req, res): Promise<void> => {
 Пиши на русском языке.`;
 
   const message = await anthropic.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-4-5",
     max_tokens: 8192,
     messages: [{ role: "user", content: prompt }],
   });
