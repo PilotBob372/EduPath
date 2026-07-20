@@ -6,12 +6,35 @@
 set -e
 
 echo "==> [1/7] Установка Docker..."
-curl -fsSL https://get.docker.com | sh
+if [ -f /etc/os-release ]; then
+  . /etc/os-release
+  OS_ID=$ID
+else
+  OS_ID="unknown"
+fi
+
+if [ "$OS_ID" = "amzn" ]; then
+  # Amazon Linux 2023
+  if grep -q "2023" /etc/os-release 2>/dev/null; then
+    sudo dnf install -y docker
+  else
+    # Amazon Linux 2
+    sudo amazon-linux-extras install docker -y
+  fi
+  sudo systemctl enable --now docker
+elif [ "$OS_ID" = "ubuntu" ] || [ "$OS_ID" = "debian" ]; then
+  curl -fsSL https://get.docker.com | sh
+else
+  curl -fsSL https://get.docker.com | sh
+fi
 sudo usermod -aG docker $USER
 sudo systemctl enable --now docker
 
 echo "==> [2/7] Установка Docker Compose..."
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" \
+COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest \
+  | grep '"tag_name"' | cut -d'"' -f4)
+sudo curl -L \
+  "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" \
   -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
