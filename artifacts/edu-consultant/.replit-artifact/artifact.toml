@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "EduPath AI — Консультант по поступлению"
+version = "1.0.0"
+id = "artifacts/edu-consultant"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21449
+
+[services.development]
+run = "pnpm --filter @workspace/edu-consultant run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/edu-consultant", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/edu-consultant/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21449"
+BASE_PATH = "/"
