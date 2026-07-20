@@ -1,0 +1,321 @@
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'wouter';
+import { useCreateProfile } from '@workspace/api-client-react';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
+import { useAppState } from '@/hooks/use-app-state';
+import { Loader2, Sparkles, Target, ArrowRight } from 'lucide-react';
+import { toast } from 'sonner';
+
+const grades = ['9 класс', '10 класс', '11 класс'];
+const years = [2024, 2025, 2026];
+const subjects = [
+  'Математика', 'Русский язык', 'Информатика', 'Физика', 
+  'Обществознание', 'Биология', 'Химия', 'История', 
+  'Литература', 'Иностранный язык'
+];
+const hobbies = [
+  'Программирование', 'Видеоигры', 'Чтение', 'Спорт',
+  'Рисование', 'Музыка', 'Блогинг', 'Научные проекты',
+  'Волонтерство', 'Дебаты'
+];
+const prioritiesList = [
+  'Высокий доход', 'Творчество', 'Стабильность', 
+  'Помощь людям', 'Технологии', 'Управление'
+];
+const careerInterests = [
+  'IT и разработка', 'Дизайн', 'Медицина', 'Инженерия',
+  'Бизнес и финансы', 'Маркетинг', 'Наука', 'Медиа'
+];
+
+const orientationQuestions = [
+  { id: 'q1', q: 'Как вы предпочитаете работать?', options: ['В команде', 'Самостоятельно', 'Управлять другими'] },
+  { id: 'q2', q: 'Что вам интереснее решать?', options: ['Сложные логические задачи', 'Творческие вызовы', 'Практические бытовые проблемы'] },
+  { id: 'q3', q: 'Как вы относитесь к рутине?', options: ['Спокойно, люблю порядок', 'Ненавижу, нужно разнообразие', 'Смотря какая цель'] },
+  { id: 'q4', q: 'Ваш идеальный рабочий день включает...', options: ['Общение с людьми', 'Работу за компьютером', 'Движение и поездки'] },
+  { id: 'q5', q: 'В свободное время вы скорее...', options: ['Изучите что-то новое', 'Создадите что-то свое', 'Проведете время с друзьями'] }
+];
+
+export default function Questionnaire() {
+  const [, setLocation] = useLocation();
+  const { setProfileId } = useAppState();
+  const createProfile = useCreateProfile();
+  
+  const [step, setStep] = useState(1);
+  const totalSteps = 12;
+
+  const [answers, setAnswers] = useState<any>({
+    grade: '',
+    egeYear: 2025,
+    favoriteSubjects: [],
+    hobbies: [],
+    priorities: [],
+    interests: [],
+    orientationAnswers: {}
+  });
+
+  const handleNext = () => {
+    if (step < totalSteps) setStep(step + 1);
+  };
+
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
+  const toggleArrayItem = (key: string, item: string) => {
+    setAnswers((prev: any) => {
+      const arr = prev[key];
+      if (arr.includes(item)) {
+        return { ...prev, [key]: arr.filter((i: string) => i !== item) };
+      } else {
+        return { ...prev, [key]: [...arr, item] };
+      }
+    });
+  };
+
+  const handleSubmit = () => {
+    createProfile.mutate({
+      data: {
+        grade: answers.grade,
+        egeYear: answers.egeYear,
+        favoriteSubjects: answers.favoriteSubjects,
+        hobbies: answers.hobbies,
+        priorities: answers.priorities,
+        interests: answers.interests,
+        orientationAnswers: answers.orientationAnswers
+      }
+    }, {
+      onSuccess: (data) => {
+        setProfileId(data.id);
+        toast.success('Профиль успешно создан!');
+        setLocation('/profile');
+      },
+      onError: () => {
+        toast.error('Произошла ошибка при сохранении профиля');
+      }
+    });
+  };
+
+  const canProceed = () => {
+    switch(step) {
+      case 1: return answers.grade !== '';
+      case 2: return answers.egeYear !== 0;
+      case 3: return answers.favoriteSubjects.length > 0;
+      case 4: return answers.hobbies.length > 0;
+      case 5: return answers.priorities.length > 0;
+      case 6: return answers.orientationAnswers['q1'] !== undefined;
+      case 7: return answers.orientationAnswers['q2'] !== undefined;
+      case 8: return answers.orientationAnswers['q3'] !== undefined;
+      case 9: return answers.orientationAnswers['q4'] !== undefined;
+      case 10: return answers.orientationAnswers['q5'] !== undefined;
+      case 11: return answers.interests.length > 0;
+      default: return true;
+    }
+  };
+
+  return (
+    <div className="min-h-[100dvh] bg-background flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-xl">
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-primary">
+            <Sparkles className="h-6 w-6" />
+            <span className="font-bold text-xl tracking-tight">EduPath</span>
+          </div>
+          <span className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full">
+            Шаг {step} из {totalSteps}
+          </span>
+        </div>
+        
+        <Progress value={(step / totalSteps) * 100} className="h-2 mb-12" />
+
+        <div className="bg-card border border-border/50 shadow-xl shadow-primary/5 rounded-3xl p-6 md:p-10 min-h-[400px] flex flex-col relative overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="flex-1 flex flex-col"
+            >
+              {step === 1 && (
+                <>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-6">В каком вы классе?</h2>
+                  <div className="grid gap-4 mt-auto mb-auto">
+                    {grades.map(grade => (
+                      <button
+                        key={grade}
+                        onClick={() => { setAnswers({ ...answers, grade }); setTimeout(handleNext, 300); }}
+                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${answers.grade === grade ? 'border-primary bg-primary/10 text-primary scale-[1.02]' : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'}`}
+                      >
+                        {grade}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step === 2 && (
+                <>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-6">В каком году планируете сдавать ЕГЭ?</h2>
+                  <div className="grid gap-4 mt-auto mb-auto">
+                    {years.map(year => (
+                      <button
+                        key={year}
+                        onClick={() => { setAnswers({ ...answers, egeYear: year }); setTimeout(handleNext, 300); }}
+                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${answers.egeYear === year ? 'border-primary bg-primary/10 text-primary scale-[1.02]' : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'}`}
+                      >
+                        {year}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step === 3 && (
+                <>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-2">Любимые школьные предметы</h2>
+                  <p className="text-muted-foreground mb-6">Выберите один или несколько</p>
+                  <div className="flex flex-wrap gap-3">
+                    {subjects.map(subject => (
+                      <button
+                        key={subject}
+                        onClick={() => toggleArrayItem('favoriteSubjects', subject)}
+                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${answers.favoriteSubjects.includes(subject) ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card hover:border-primary/50'}`}
+                      >
+                        {subject}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step === 4 && (
+                <>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-2">Чем вы увлекаетесь?</h2>
+                  <p className="text-muted-foreground mb-6">Ваши хобби помогут нам найти подходящее направление</p>
+                  <div className="flex flex-wrap gap-3">
+                    {hobbies.map(hobby => (
+                      <button
+                        key={hobby}
+                        onClick={() => toggleArrayItem('hobbies', hobby)}
+                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${answers.hobbies.includes(hobby) ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card hover:border-primary/50'}`}
+                      >
+                        {hobby}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step === 5 && (
+                <>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-2">Что для вас важнее всего в будущей работе?</h2>
+                  <p className="text-muted-foreground mb-6">Выберите до 3 приоритетов</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {prioritiesList.map(priority => (
+                      <button
+                        key={priority}
+                        onClick={() => toggleArrayItem('priorities', priority)}
+                        className={`p-4 rounded-xl font-medium transition-all duration-200 border-2 text-left flex items-center justify-between ${answers.priorities.includes(priority) ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-card hover:border-primary/50'}`}
+                      >
+                        {priority}
+                        {answers.priorities.includes(priority) && <Sparkles className="w-4 h-4" />}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step >= 6 && step <= 10 && (
+                <>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
+                    {orientationQuestions[step - 6].q}
+                  </h2>
+                  <div className="grid gap-4 mt-auto mb-auto">
+                    {orientationQuestions[step - 6].options.map(opt => (
+                      <button
+                        key={opt}
+                        onClick={() => { 
+                          setAnswers((prev: any) => ({
+                            ...prev, 
+                            orientationAnswers: { ...prev.orientationAnswers, [orientationQuestions[step-6].id]: opt }
+                          }));
+                          setTimeout(handleNext, 300);
+                        }}
+                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${answers.orientationAnswers[orientationQuestions[step-6].id] === opt ? 'border-primary bg-primary/10 text-primary scale-[1.02]' : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'}`}
+                      >
+                        {opt}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step === 11 && (
+                <>
+                  <h2 className="text-2xl md:text-3xl font-bold mb-2">Какие сферы вам интересны?</h2>
+                  <p className="text-muted-foreground mb-6">Даже если вы еще не уверены</p>
+                  <div className="flex flex-wrap gap-3">
+                    {careerInterests.map(interest => (
+                      <button
+                        key={interest}
+                        onClick={() => toggleArrayItem('interests', interest)}
+                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${answers.interests.includes(interest) ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card hover:border-primary/50'}`}
+                      >
+                        {interest}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {step === 12 && (
+                <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-8">
+                  <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
+                    <Target className="w-10 h-10 text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold mb-3">Всё готово!</h2>
+                    <p className="text-muted-foreground text-lg max-w-[300px] mx-auto">
+                      Наш ИИ готов проанализировать ваши ответы и подобрать идеальное направление
+                    </p>
+                  </div>
+                  <Button 
+                    size="lg" 
+                    className="w-full mt-4 h-14 text-lg rounded-xl group" 
+                    onClick={handleSubmit}
+                    disabled={createProfile.isPending}
+                  >
+                    {createProfile.isPending ? (
+                      <Loader2 className="w-6 h-6 animate-spin" />
+                    ) : (
+                      <>
+                        Получить рекомендации
+                        <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {step < 12 && (
+          <div className="mt-8 flex items-center justify-between">
+            <Button variant="ghost" size="lg" onClick={handleBack} disabled={step === 1} className="text-muted-foreground hover:text-foreground">
+              Назад
+            </Button>
+            {step !== 1 && step !== 2 && (step < 6 || step > 10) && (
+              <Button size="lg" onClick={handleNext} disabled={!canProceed()} className="rounded-xl px-8 shadow-md shadow-primary/20">
+                Далее
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

@@ -5,7 +5,8 @@
  * API specification for EduPath AI — education consultant
  * OpenAPI spec version: 0.1.0
  */
+import type { UniversityMatch } from './universityMatch';
 
-export interface HealthStatus {
-  status: string;
+export interface UniversitiesResult {
+  matches: UniversityMatch[];
 }

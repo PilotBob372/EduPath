@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface Tutor {
+  name: string;
+  subject: string;
+  experience: string;
+  rating: number;
+  costPerHour: number;
 }
