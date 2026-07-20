@@ -16,7 +16,7 @@ echo "==> Используем сеть: ${NETWORK}"
 docker run --rm \
   --network "${NETWORK}" \
   -e DATABASE_URL="postgresql://edupath:${DB_PASSWORD}@db:5432/edupath" \
-  -v "$(pwd)/../:/app" \
+  -v "$(pwd):/app" \
   -w /app \
   node:22-alpine sh -c "
     npm install -g pnpm &&
