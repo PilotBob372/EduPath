@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Install all workspace dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Build lib/db TypeScript declarations (required by api-server)
 RUN cd lib/db && pnpm exec tsc -p tsconfig.json

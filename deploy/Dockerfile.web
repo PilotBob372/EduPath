@@ -6,7 +6,7 @@ RUN corepack enable && corepack prepare pnpm@9 --activate
 WORKDIR /app
 COPY . .
 
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Build the Vite app; BASE_PATH=/ and a dummy PORT for the build step
 RUN PORT=3000 BASE_PATH=/ NODE_ENV=production \
