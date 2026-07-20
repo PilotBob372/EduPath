@@ -1,0 +1,60 @@
+remote: Enumerating objects: 7, done.
+remote: Counting objects: 100% (7/7), done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 4 (delta 3), reused 4 (delta 3), pack-reused 0 (from 0)
+Unpacking objects: 100% (4/4), 407 bytes | 407.00 KiB/s, done.
+From https://github.com/PilotBob372/EduPath
+ * branch            main       -> FETCH_HEAD
+   ac71ba4..2d4bf23  main       -> origin/main
+Updating ac71ba4..2d4bf23
+Fast-forward
+ deploy/migrate.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+==> Применяем схему БД...
+==> Используем сеть: deploy_default
+
+added 1 package in 3s
+
+1 package is looking for funding
+  run `npm fund` for details
+npm notice
+npm notice New major version of npm available! 10.9.8 -> 12.0.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.1
+npm notice To update run: npm install -g npm@12.0.1
+npm notice
+Scope: all 10 workspace projects
+? Verifying lockfile against supply-chain policies (481 entries)...
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +476
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 476, reused 0, downloaded 0, added 0
+Progress: resolved 476, reused 0, downloaded 1, added 0
+Progress: resolved 476, reused 0, downloaded 12, added 0
+Progress: resolved 476, reused 0, downloaded 50, added 0
+Progress: resolved 476, reused 0, downloaded 116, added 4
+Progress: resolved 476, reused 0, downloaded 163, added 8
+Progress: resolved 476, reused 0, downloaded 227, added 12
+✓ Lockfile passes supply-chain policies (481 entries in 8.3s)
+Progress: resolved 476, reused 0, downloaded 256, added 16
+Progress: resolved 476, reused 0, downloaded 296, added 16
+Progress: resolved 476, reused 0, downloaded 300, added 16
+Progress: resolved 476, reused 0, downloaded 306, added 16
+Progress: resolved 476, reused 0, downloaded 307, added 16
+Progress: resolved 476, reused 0, downloaded 428, added 24
+Progress: resolved 476, reused 0, downloaded 476, added 261
+Progress: resolved 476, reused 0, downloaded 476, added 298
+Progress: resolved 476, reused 0, downloaded 476, added 476, done
+
+dependencies:
++ @replit/connectors-sdk 0.4.1
+
+devDependencies:
++ prettier 3.9.5
++ typescript 5.9.3
+
+. preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+. preinstall: Done
+[ERR_PNPM_IGNORED_BUILDS] Ignored build scripts: esbuild@0.27.3
+
+Run "pnpm approve-builds" to pick which dependencies should be allowed to run scripts.
