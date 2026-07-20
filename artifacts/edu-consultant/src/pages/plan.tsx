@@ -229,7 +229,7 @@ export default function Plan() {
       
       <div className="fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-md border-t border-border p-4 z-20">
         <div className="container mx-auto max-w-3xl flex items-center justify-center">
-          <Button size="lg" className="w-full md:w-auto min-w-[300px] rounded-xl px-8 h-14 text-lg shadow-xl shadow-primary/20" onClick={() => toast.success('Заявка на консультацию отправлена!')}>
+          <Button size="lg" className="w-full md:w-auto min-w-[300px] rounded-xl px-8 h-14 text-lg shadow-xl shadow-primary/20" onClick={() => setLocation('/booking')}>
             Записаться на консультацию
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>

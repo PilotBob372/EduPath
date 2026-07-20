@@ -8,6 +8,7 @@ import Profile from '@/pages/profile';
 import Universities from '@/pages/universities';
 import Chat from '@/pages/chat';
 import Plan from '@/pages/plan';
+import Booking from '@/pages/booking';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/universities" component={Universities} />
       <Route path="/chat" component={Chat} />
       <Route path="/plan" component={Plan} />
+      <Route path="/booking" component={Booking} />
       <Route component={NotFound} />
     </Switch>
   );
