@@ -197,13 +197,25 @@ export default function Plan() {
                       <div className="flex flex-wrap gap-3 text-sm text-muted-foreground items-center">
                         <span>Опыт: {tutor.experience}</span>
                         <span>•</span>
-                        <span className="flex items-center gap-1">Рейтинг: <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> {tutor.rating}</span>
+                        <span className="flex items-center gap-1">
+                          <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> {tutor.rating}
+                        </span>
+                        {tutor.format && (
+                          <>
+                            <span>•</span>
+                            <span>{tutor.format}</span>
+                          </>
+                        )}
                       </div>
+
+                      {tutor.bio && (
+                        <p className="mt-2 text-sm text-muted-foreground leading-snug">{tutor.bio}</p>
+                      )}
                       
                       <div className="mt-3 font-medium flex items-center justify-between">
                         <span>{formatCost(tutor.costPerHour)} / час</span>
                         <Button variant="outline" size="sm" className="h-8 rounded-lg text-xs border-primary/20 hover:bg-primary/5 text-primary">
-                          Подробнее
+                          Записаться
                         </Button>
                       </div>
                     </div>
