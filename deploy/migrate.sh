@@ -1,21 +1,20 @@
 #!/bin/bash
 # ============================================================
-# Применяет схему базы данных через drizzle-kit push
+# EduPath — применяет схему БД и заполняет репетиторов
 # Запускать после первого запуска и при изменениях схемы
 # ============================================================
 set -e
 
-cd ~/edupath
+cd ~/edupath/deploy
 
-source deploy/.env
+source .env
 
-echo "==> Применяем схему БД..."
-API_CONTAINER=$(docker ps --filter "name=deploy-api" --format "{{.Names}}" | head -1)
-echo "==> Запускаем миграцию в контейнере: ${API_CONTAINER}"
+DB_CONTAINER=$(docker ps --filter "name=deploy-db" --format "{{.Names}}" | head -1)
+echo "==> Применяем схему БД в контейнере: ${DB_CONTAINER}"
 
-docker exec \
-  -e DATABASE_URL="postgresql://edupath:${DB_PASSWORD}@db:5432/edupath" \
-  "${API_CONTAINER}" \
-  sh -c "cd /app && pnpm --filter @workspace/db run push"
+docker exec -i \
+  -e PGPASSWORD="${DB_PASSWORD}" \
+  "${DB_CONTAINER}" \
+  psql -U edupath -d edupath < migrate.sql
 
-echo "==> Схема применена успешно."
+echo "==> Схема применена и репетиторы добавлены успешно."
