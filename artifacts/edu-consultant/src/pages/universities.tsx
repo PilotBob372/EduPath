@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { useMatchUniversities } from '@workspace/api-client-react';
 import { useAppState } from '@/hooks/use-app-state';
 import { Button } from '@/components/ui/button';
-import { Loader2, Building2, MapPin, CheckCircle2, ChevronRight, GraduationCap, ArrowLeft, Trophy } from 'lucide-react';
+import { Loader2, Building2, MapPin, CheckCircle2, ChevronRight, GraduationCap, ArrowLeft, Trophy, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Universities() {
@@ -72,9 +72,13 @@ export default function Universities() {
             </button>
             <div className="font-bold text-lg">Подбор вузов</div>
           </div>
-          <div className="text-sm font-medium bg-secondary text-secondary-foreground px-3 py-1 rounded-full truncate max-w-[150px] md:max-w-xs">
-            {selectedSpecialty || 'Все направления'}
-          </div>
+          <button
+            onClick={() => setLocation('/')}
+            className="flex items-center gap-1.5 text-primary font-bold hover:opacity-70 transition-opacity"
+          >
+            <Sparkles className="w-4 h-4" />
+            EduPath
+          </button>
         </div>
       </header>
 
