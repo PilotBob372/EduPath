@@ -3,13 +3,17 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: API specification for EduPath AI — education consultant
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: edu
+    description: Education consultant operations
+  - name: anthropic
+    description: Anthropic AI chat operations
 paths:
   /healthz:
     get:
@@ -24,6 +28,226 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /edu/profile:
+    post:
+      operationId: createProfile
+      tags: [edu]
+      summary: Save applicant questionnaire answers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileInput"
+      responses:
+        "201":
+          description: Created profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicantProfile"
+
+  /edu/profile/{id}:
+    get:
+      operationId: getProfile
+      tags: [edu]
+      summary: Get applicant profile
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Applicant profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicantProfile"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /edu/recommendations:
+    post:
+      operationId: generateRecommendations
+      tags: [edu]
+      summary: Generate AI-powered study direction recommendations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecommendationsRequest"
+      responses:
+        "200":
+          description: AI recommendations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecommendationResult"
+
+  /edu/universities:
+    post:
+      operationId: matchUniversities
+      tags: [edu]
+      summary: Get matched Moscow universities based on profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UniversitiesRequest"
+      responses:
+        "200":
+          description: Matched universities
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UniversitiesResult"
+
+  /edu/programs:
+    post:
+      operationId: generatePrograms
+      tags: [edu]
+      summary: Generate EGE preparation programs for selected university
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProgramsRequest"
+      responses:
+        "200":
+          description: Preparation programs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrepPlanResult"
+
+  /anthropic/conversations:
+    get:
+      operationId: listAnthropicConversations
+      tags: [anthropic]
+      summary: List all conversations
+      responses:
+        "200":
+          description: List of conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AnthropicConversation"
+    post:
+      operationId: createAnthropicConversation
+      tags: [anthropic]
+      summary: Create a new conversation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnthropicConversationInput"
+      responses:
+        "201":
+          description: Created conversation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnthropicConversation"
+
+  /anthropic/conversations/{id}:
+    get:
+      operationId: getAnthropicConversation
+      tags: [anthropic]
+      summary: Get conversation with messages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Conversation with messages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnthropicConversationWithMessages"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnthropicError"
+    delete:
+      operationId: deleteAnthropicConversation
+      tags: [anthropic]
+      summary: Delete a conversation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnthropicError"
+
+  /anthropic/conversations/{id}/messages:
+    get:
+      operationId: listAnthropicMessages
+      tags: [anthropic]
+      summary: List messages in a conversation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AnthropicMessage"
+    post:
+      operationId: sendAnthropicMessage
+      tags: [anthropic]
+      summary: Send a message and receive an AI response (SSE stream)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AnthropicMessageInput"
+      responses:
+        "200":
+          description: SSE stream of assistant response chunks
+          content:
+            text/event-stream: {}
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +258,390 @@ components:
       required:
         - status
 
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    ApplicantProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        grade:
+          type: string
+        egeYear:
+          type: integer
+        favoriteSubjects:
+          type: array
+          items:
+            type: string
+        hobbies:
+          type: array
+          items:
+            type: string
+        interests:
+          type: array
+          items:
+            type: string
+        priorities:
+          type: array
+          items:
+            type: string
+        orientationAnswers:
+          type: object
+          additionalProperties:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - grade
+        - egeYear
+        - favoriteSubjects
+        - hobbies
+        - interests
+        - priorities
+        - orientationAnswers
+        - createdAt
+
+    ProfileInput:
+      type: object
+      properties:
+        grade:
+          type: string
+        egeYear:
+          type: integer
+        favoriteSubjects:
+          type: array
+          items:
+            type: string
+        hobbies:
+          type: array
+          items:
+            type: string
+        interests:
+          type: array
+          items:
+            type: string
+        priorities:
+          type: array
+          items:
+            type: string
+        orientationAnswers:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - grade
+        - egeYear
+        - favoriteSubjects
+        - hobbies
+        - interests
+        - priorities
+        - orientationAnswers
+
+    StudyDirection:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        whyFits:
+          type: string
+        professions:
+          type: array
+          items:
+            type: string
+        matchScore:
+          type: integer
+      required:
+        - name
+        - description
+        - whyFits
+        - professions
+        - matchScore
+
+    RecommendationResult:
+      type: object
+      properties:
+        profileId:
+          type: integer
+        strengths:
+          type: string
+        studyDirections:
+          type: array
+          items:
+            $ref: "#/components/schemas/StudyDirection"
+        interestAreas:
+          type: array
+          items:
+            type: string
+      required:
+        - profileId
+        - strengths
+        - studyDirections
+        - interestAreas
+
+    RecommendationsRequest:
+      type: object
+      properties:
+        profileId:
+          type: integer
+      required:
+        - profileId
+
+    University:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        shortName:
+          type: string
+        description:
+          type: string
+        egeSubjects:
+          type: array
+          items:
+            type: string
+        mathLevel:
+          type: string
+        rank:
+          type: integer
+      required:
+        - id
+        - name
+        - shortName
+        - description
+        - egeSubjects
+        - mathLevel
+        - rank
+
+    UniversityMatch:
+      type: object
+      properties:
+        university:
+          $ref: "#/components/schemas/University"
+        recommendedFaculty:
+          type: string
+        matchReason:
+          type: string
+        matchScore:
+          type: integer
+      required:
+        - university
+        - recommendedFaculty
+        - matchReason
+        - matchScore
+
+    UniversitiesResult:
+      type: object
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: "#/components/schemas/UniversityMatch"
+      required:
+        - matches
+
+    UniversitiesRequest:
+      type: object
+      properties:
+        profileId:
+          type: integer
+        studyDirectionName:
+          type: ["string", "null"]
+      required:
+        - profileId
+
+    PrepCourse:
+      type: object
+      properties:
+        name:
+          type: string
+        subject:
+          type: string
+        format:
+          type: string
+        durationWeeks:
+          type: integer
+        costPerMonth:
+          type: integer
+      required:
+        - name
+        - subject
+        - format
+        - durationWeeks
+        - costPerMonth
+
+    Tutor:
+      type: object
+      properties:
+        name:
+          type: string
+        subject:
+          type: string
+        experience:
+          type: string
+        rating:
+          type: number
+        costPerHour:
+          type: integer
+      required:
+        - name
+        - subject
+        - experience
+        - rating
+        - costPerHour
+
+    PrepProgram:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        durationMonths:
+          type: integer
+        courses:
+          type: array
+          items:
+            $ref: "#/components/schemas/PrepCourse"
+        tutors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tutor"
+        totalCostEstimate:
+          type: integer
+      required:
+        - type
+        - name
+        - durationMonths
+        - courses
+        - tutors
+        - totalCostEstimate
+
+    PrepPlanResult:
+      type: object
+      properties:
+        universityName:
+          type: string
+        specialty:
+          type: string
+        exams:
+          type: array
+          items:
+            type: string
+        preparationMonths:
+          type: integer
+        programs:
+          type: array
+          items:
+            $ref: "#/components/schemas/PrepProgram"
+      required:
+        - universityName
+        - specialty
+        - exams
+        - preparationMonths
+        - programs
+
+    ProgramsRequest:
+      type: object
+      properties:
+        profileId:
+          type: integer
+        universityId:
+          type: integer
+        specialty:
+          type: string
+      required:
+        - profileId
+        - universityId
+        - specialty
+
+    AnthropicConversation:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - createdAt
+
+    AnthropicMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        conversationId:
+          type: integer
+        role:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - conversationId
+        - role
+        - content
+        - createdAt
+
+    AnthropicConversationInput:
+      type: object
+      properties:
+        title:
+          type: string
+      required:
+        - title
+
+    AnthropicMessageInput:
+      type: object
+      properties:
+        content:
+          type: string
+      required:
+        - content
+
+    AnthropicConversationWithMessages:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/AnthropicMessage"
+      required:
+        - id
+        - title
+        - createdAt
+        - messages
+
+    AnthropicError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

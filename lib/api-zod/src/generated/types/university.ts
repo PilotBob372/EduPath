@@ -6,6 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface University {
+  id: number;
+  name: string;
+  shortName: string;
+  description: string;
+  egeSubjects: string[];
+  mathLevel: string;
+  rank: number;
 }
