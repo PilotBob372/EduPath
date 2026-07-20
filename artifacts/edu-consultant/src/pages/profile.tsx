@@ -72,9 +72,12 @@ export default function Profile() {
     <div className="min-h-[100dvh] bg-background pb-20">
       <header className="bg-card border-b border-border sticky top-0 z-10">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-primary font-bold text-xl">
+          <button
+            onClick={() => setLocation('/')}
+            className="flex items-center gap-2 text-primary font-bold text-xl hover:opacity-70 transition-opacity"
+          >
             <Sparkles className="w-6 h-6" /> EduPath
-          </div>
+          </button>
           <div className="text-sm font-medium bg-secondary text-secondary-foreground px-3 py-1 rounded-full">
             Ваш профиль
           </div>

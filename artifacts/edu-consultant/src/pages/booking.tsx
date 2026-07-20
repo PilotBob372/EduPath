@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { ArrowLeft, ChevronLeft, ChevronRight, Check, Clock, User, Video, MapPin, X } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Check, Clock, User, Video, MapPin, X, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 const EXPERTS = [
@@ -140,11 +140,20 @@ export default function Booking() {
     <div className="min-h-[100dvh] bg-background pb-10">
       {/* Header */}
       <header className="bg-card border-b border-border sticky top-0 z-10">
-        <div className="container mx-auto px-4 h-16 flex items-center gap-4">
-          <button onClick={() => setLocation('/plan')} className="p-2 -ml-2 rounded-full hover:bg-muted text-muted-foreground transition-colors">
-            <ArrowLeft className="w-5 h-5" />
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button onClick={() => setLocation('/plan')} className="p-2 -ml-2 rounded-full hover:bg-muted text-muted-foreground transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div className="font-bold text-lg">Запись на консультацию</div>
+          </div>
+          <button
+            onClick={() => setLocation('/')}
+            className="flex items-center gap-1.5 text-primary font-bold hover:opacity-70 transition-opacity"
+          >
+            <Sparkles className="w-4 h-4" />
+            EduPath
           </button>
-          <div className="font-bold text-lg">Запись на консультацию</div>
         </div>
       </header>
 

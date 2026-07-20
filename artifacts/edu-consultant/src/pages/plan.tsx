@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { useGeneratePrograms } from '@workspace/api-client-react';
 import { useAppState } from '@/hooks/use-app-state';
 import { Button } from '@/components/ui/button';
-import { Loader2, ArrowLeft, Calendar, BookOpen, GraduationCap, Clock, Receipt, User, ArrowRight, Star } from 'lucide-react';
+import { Loader2, ArrowLeft, Calendar, BookOpen, GraduationCap, Clock, Receipt, User, ArrowRight, Star, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Plan() {
@@ -72,6 +72,13 @@ export default function Plan() {
             </button>
             <div className="font-bold text-lg">План подготовки</div>
           </div>
+          <button
+            onClick={() => setLocation('/')}
+            className="flex items-center gap-1.5 text-primary font-bold hover:opacity-70 transition-opacity"
+          >
+            <Sparkles className="w-4 h-4" />
+            EduPath
+          </button>
         </div>
       </header>
 

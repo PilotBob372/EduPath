@@ -135,10 +135,13 @@ export default function Questionnaire() {
     <div className="min-h-[100dvh] bg-background flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-xl">
         <div className="mb-8 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-primary">
+          <button
+            onClick={() => setLocation('/')}
+            className="flex items-center gap-2 text-primary hover:opacity-70 transition-opacity"
+          >
             <Sparkles className="h-6 w-6" />
             <span className="font-bold text-xl tracking-tight">EduPath</span>
-          </div>
+          </button>
           <span className="text-sm font-medium text-muted-foreground bg-muted px-3 py-1 rounded-full">
             Шаг {step} из {totalSteps}
           </span>
