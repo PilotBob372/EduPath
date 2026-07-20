@@ -8,11 +8,17 @@ import { useAppState } from '@/hooks/use-app-state';
 import { Loader2, Sparkles, Target, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
 
-const grades = ['9 класс', '10 класс', '11 класс'];
-const years = [2024, 2025, 2026];
+const CURRENT_YEAR = 2026;
+
+const gradeOptions = [
+  { label: '9 класс', egeYear: CURRENT_YEAR + 2 },
+  { label: '10 класс', egeYear: CURRENT_YEAR + 1 },
+  { label: '11 класс', egeYear: CURRENT_YEAR },
+];
+
 const subjects = [
-  'Математика', 'Русский язык', 'Информатика', 'Физика', 
-  'Обществознание', 'Биология', 'Химия', 'История', 
+  'Математика', 'Русский язык', 'Информатика', 'Физика',
+  'Обществознание', 'Биология', 'Химия', 'История',
   'Литература', 'Иностранный язык'
 ];
 const hobbies = [
@@ -21,7 +27,7 @@ const hobbies = [
   'Волонтерство', 'Дебаты'
 ];
 const prioritiesList = [
-  'Высокий доход', 'Творчество', 'Стабильность', 
+  'Высокий доход', 'Творчество', 'Стабильность',
   'Помощь людям', 'Технологии', 'Управление'
 ];
 const careerInterests = [
@@ -37,17 +43,26 @@ const orientationQuestions = [
   { id: 'q5', q: 'В свободное время вы скорее...', options: ['Изучите что-то новое', 'Создадите что-то свое', 'Проведете время с друзьями'] }
 ];
 
+// Steps:
+// 1  — класс (автоматически устанавливает год ЕГЭ)
+// 2  — любимые предметы
+// 3  — хобби
+// 4  — приоритеты
+// 5-9 — профориентационные вопросы
+// 10 — сферы интересов
+// 11 — финальный экран
+
 export default function Questionnaire() {
   const [, setLocation] = useLocation();
   const { setProfileId } = useAppState();
   const createProfile = useCreateProfile();
-  
+
   const [step, setStep] = useState(1);
-  const totalSteps = 12;
+  const totalSteps = 11;
 
   const [answers, setAnswers] = useState<any>({
     grade: '',
-    egeYear: 2025,
+    egeYear: 0,
     favoriteSubjects: [],
     hobbies: [],
     priorities: [],
@@ -98,21 +113,23 @@ export default function Questionnaire() {
   };
 
   const canProceed = () => {
-    switch(step) {
+    switch (step) {
       case 1: return answers.grade !== '';
-      case 2: return answers.egeYear !== 0;
-      case 3: return answers.favoriteSubjects.length > 0;
-      case 4: return answers.hobbies.length > 0;
-      case 5: return answers.priorities.length > 0;
-      case 6: return answers.orientationAnswers['q1'] !== undefined;
-      case 7: return answers.orientationAnswers['q2'] !== undefined;
-      case 8: return answers.orientationAnswers['q3'] !== undefined;
-      case 9: return answers.orientationAnswers['q4'] !== undefined;
-      case 10: return answers.orientationAnswers['q5'] !== undefined;
-      case 11: return answers.interests.length > 0;
+      case 2: return answers.favoriteSubjects.length > 0;
+      case 3: return answers.hobbies.length > 0;
+      case 4: return answers.priorities.length > 0;
+      case 5: return answers.orientationAnswers['q1'] !== undefined;
+      case 6: return answers.orientationAnswers['q2'] !== undefined;
+      case 7: return answers.orientationAnswers['q3'] !== undefined;
+      case 8: return answers.orientationAnswers['q4'] !== undefined;
+      case 9: return answers.orientationAnswers['q5'] !== undefined;
+      case 10: return answers.interests.length > 0;
       default: return true;
     }
   };
+
+  // Orientation questions occupy steps 5-9 → index = step - 5
+  const orientIdx = step - 5;
 
   return (
     <div className="min-h-[100dvh] bg-background flex flex-col items-center justify-center p-4">
@@ -126,7 +143,7 @@ export default function Questionnaire() {
             Шаг {step} из {totalSteps}
           </span>
         </div>
-        
+
         <Progress value={(step / totalSteps) * 100} className="h-2 mb-12" />
 
         <div className="bg-card border border-border/50 shadow-xl shadow-primary/5 rounded-3xl p-6 md:p-10 min-h-[400px] flex flex-col relative overflow-hidden">
@@ -139,41 +156,36 @@ export default function Questionnaire() {
               transition={{ duration: 0.3, ease: 'easeOut' }}
               className="flex-1 flex flex-col"
             >
+              {/* Step 1 — класс */}
               {step === 1 && (
                 <>
                   <h2 className="text-2xl md:text-3xl font-bold mb-6">В каком вы классе?</h2>
                   <div className="grid gap-4 mt-auto mb-auto">
-                    {grades.map(grade => (
+                    {gradeOptions.map(({ label, egeYear }) => (
                       <button
-                        key={grade}
-                        onClick={() => { setAnswers({ ...answers, grade }); setTimeout(handleNext, 300); }}
-                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${answers.grade === grade ? 'border-primary bg-primary/10 text-primary scale-[1.02]' : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'}`}
+                        key={label}
+                        onClick={() => {
+                          setAnswers((prev: any) => ({ ...prev, grade: label, egeYear }));
+                          setTimeout(handleNext, 300);
+                        }}
+                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${
+                          answers.grade === label
+                            ? 'border-primary bg-primary/10 text-primary scale-[1.02]'
+                            : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'
+                        }`}
                       >
-                        {grade}
+                        <span>{label}</span>
+                        <span className="ml-3 text-sm font-normal opacity-60">
+                          — ЕГЭ в {egeYear} году
+                        </span>
                       </button>
                     ))}
                   </div>
                 </>
               )}
 
+              {/* Step 2 — предметы */}
               {step === 2 && (
-                <>
-                  <h2 className="text-2xl md:text-3xl font-bold mb-6">В каком году планируете сдавать ЕГЭ?</h2>
-                  <div className="grid gap-4 mt-auto mb-auto">
-                    {years.map(year => (
-                      <button
-                        key={year}
-                        onClick={() => { setAnswers({ ...answers, egeYear: year }); setTimeout(handleNext, 300); }}
-                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${answers.egeYear === year ? 'border-primary bg-primary/10 text-primary scale-[1.02]' : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'}`}
-                      >
-                        {year}
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {step === 3 && (
                 <>
                   <h2 className="text-2xl md:text-3xl font-bold mb-2">Любимые школьные предметы</h2>
                   <p className="text-muted-foreground mb-6">Выберите один или несколько</p>
@@ -182,7 +194,11 @@ export default function Questionnaire() {
                       <button
                         key={subject}
                         onClick={() => toggleArrayItem('favoriteSubjects', subject)}
-                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${answers.favoriteSubjects.includes(subject) ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card hover:border-primary/50'}`}
+                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${
+                          answers.favoriteSubjects.includes(subject)
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-border bg-card hover:border-primary/50'
+                        }`}
                       >
                         {subject}
                       </button>
@@ -191,7 +207,8 @@ export default function Questionnaire() {
                 </>
               )}
 
-              {step === 4 && (
+              {/* Step 3 — хобби */}
+              {step === 3 && (
                 <>
                   <h2 className="text-2xl md:text-3xl font-bold mb-2">Чем вы увлекаетесь?</h2>
                   <p className="text-muted-foreground mb-6">Ваши хобби помогут нам найти подходящее направление</p>
@@ -200,7 +217,11 @@ export default function Questionnaire() {
                       <button
                         key={hobby}
                         onClick={() => toggleArrayItem('hobbies', hobby)}
-                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${answers.hobbies.includes(hobby) ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card hover:border-primary/50'}`}
+                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${
+                          answers.hobbies.includes(hobby)
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-border bg-card hover:border-primary/50'
+                        }`}
                       >
                         {hobby}
                       </button>
@@ -209,7 +230,8 @@ export default function Questionnaire() {
                 </>
               )}
 
-              {step === 5 && (
+              {/* Step 4 — приоритеты */}
+              {step === 4 && (
                 <>
                   <h2 className="text-2xl md:text-3xl font-bold mb-2">Что для вас важнее всего в будущей работе?</h2>
                   <p className="text-muted-foreground mb-6">Выберите до 3 приоритетов</p>
@@ -218,7 +240,11 @@ export default function Questionnaire() {
                       <button
                         key={priority}
                         onClick={() => toggleArrayItem('priorities', priority)}
-                        className={`p-4 rounded-xl font-medium transition-all duration-200 border-2 text-left flex items-center justify-between ${answers.priorities.includes(priority) ? 'border-primary bg-primary/10 text-primary' : 'border-border bg-card hover:border-primary/50'}`}
+                        className={`p-4 rounded-xl font-medium transition-all duration-200 border-2 text-left flex items-center justify-between ${
+                          answers.priorities.includes(priority)
+                            ? 'border-primary bg-primary/10 text-primary'
+                            : 'border-border bg-card hover:border-primary/50'
+                        }`}
                       >
                         {priority}
                         {answers.priorities.includes(priority) && <Sparkles className="w-4 h-4" />}
@@ -228,23 +254,28 @@ export default function Questionnaire() {
                 </>
               )}
 
-              {step >= 6 && step <= 10 && (
+              {/* Steps 5-9 — профориентация */}
+              {step >= 5 && step <= 9 && (
                 <>
                   <h2 className="text-2xl md:text-3xl font-bold mb-6 leading-tight">
-                    {orientationQuestions[step - 6].q}
+                    {orientationQuestions[orientIdx].q}
                   </h2>
                   <div className="grid gap-4 mt-auto mb-auto">
-                    {orientationQuestions[step - 6].options.map(opt => (
+                    {orientationQuestions[orientIdx].options.map(opt => (
                       <button
                         key={opt}
-                        onClick={() => { 
+                        onClick={() => {
                           setAnswers((prev: any) => ({
-                            ...prev, 
-                            orientationAnswers: { ...prev.orientationAnswers, [orientationQuestions[step-6].id]: opt }
+                            ...prev,
+                            orientationAnswers: { ...prev.orientationAnswers, [orientationQuestions[orientIdx].id]: opt }
                           }));
                           setTimeout(handleNext, 300);
                         }}
-                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${answers.orientationAnswers[orientationQuestions[step-6].id] === opt ? 'border-primary bg-primary/10 text-primary scale-[1.02]' : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'}`}
+                        className={`p-5 rounded-2xl text-left font-medium text-lg transition-all duration-200 border-2 ${
+                          answers.orientationAnswers[orientationQuestions[orientIdx].id] === opt
+                            ? 'border-primary bg-primary/10 text-primary scale-[1.02]'
+                            : 'border-border/50 bg-card hover:border-primary/50 hover:bg-muted'
+                        }`}
                       >
                         {opt}
                       </button>
@@ -253,16 +284,21 @@ export default function Questionnaire() {
                 </>
               )}
 
-              {step === 11 && (
+              {/* Step 10 — сферы интересов */}
+              {step === 10 && (
                 <>
                   <h2 className="text-2xl md:text-3xl font-bold mb-2">Какие сферы вам интересны?</h2>
-                  <p className="text-muted-foreground mb-6">Даже если вы еще не уверены</p>
+                  <p className="text-muted-foreground mb-6">Даже если вы ещё не уверены</p>
                   <div className="flex flex-wrap gap-3">
                     {careerInterests.map(interest => (
                       <button
                         key={interest}
                         onClick={() => toggleArrayItem('interests', interest)}
-                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${answers.interests.includes(interest) ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card hover:border-primary/50'}`}
+                        className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 border-2 ${
+                          answers.interests.includes(interest)
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-border bg-card hover:border-primary/50'
+                        }`}
                       >
                         {interest}
                       </button>
@@ -271,7 +307,8 @@ export default function Questionnaire() {
                 </>
               )}
 
-              {step === 12 && (
+              {/* Step 11 — финальный экран */}
+              {step === 11 && (
                 <div className="flex flex-col items-center justify-center h-full text-center space-y-6 py-8">
                   <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center">
                     <Target className="w-10 h-10 text-primary" />
@@ -281,10 +318,15 @@ export default function Questionnaire() {
                     <p className="text-muted-foreground text-lg max-w-[300px] mx-auto">
                       Наш ИИ готов проанализировать ваши ответы и подобрать идеальное направление
                     </p>
+                    {answers.egeYear > 0 && (
+                      <p className="mt-3 text-sm text-muted-foreground">
+                        {answers.grade} · ЕГЭ в {answers.egeYear} году
+                      </p>
+                    )}
                   </div>
-                  <Button 
-                    size="lg" 
-                    className="w-full mt-4 h-14 text-lg rounded-xl group" 
+                  <Button
+                    size="lg"
+                    className="w-full mt-4 h-14 text-lg rounded-xl group"
                     onClick={handleSubmit}
                     disabled={createProfile.isPending}
                   >
@@ -303,13 +345,25 @@ export default function Questionnaire() {
           </AnimatePresence>
         </div>
 
-        {step < 12 && (
+        {step < 11 && (
           <div className="mt-8 flex items-center justify-between">
-            <Button variant="ghost" size="lg" onClick={handleBack} disabled={step === 1} className="text-muted-foreground hover:text-foreground">
+            <Button
+              variant="ghost"
+              size="lg"
+              onClick={handleBack}
+              disabled={step === 1}
+              className="text-muted-foreground hover:text-foreground"
+            >
               Назад
             </Button>
-            {step !== 1 && step !== 2 && (step < 6 || step > 10) && (
-              <Button size="lg" onClick={handleNext} disabled={!canProceed()} className="rounded-xl px-8 shadow-md shadow-primary/20">
+            {/* Show "Далее" only on multi-select steps (not auto-advance single-select ones) */}
+            {step !== 1 && !(step >= 5 && step <= 9) && (
+              <Button
+                size="lg"
+                onClick={handleNext}
+                disabled={!canProceed()}
+                className="rounded-xl px-8 shadow-md shadow-primary/20"
+              >
                 Далее
               </Button>
             )}
