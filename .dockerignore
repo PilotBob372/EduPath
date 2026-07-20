@@ -1,0 +1,24 @@
+# Git
+.git
+.gitignore
+
+# Node modules (устанавливаются внутри контейнера)
+node_modules
+**/node_modules
+
+# Dev/build артефакты
+**/dist
+**/.tsbuildinfo
+
+# Логи
+*.log
+
+# Среда разработки
+.local
+.replit
+replit.nix
+
+# Секреты (никогда не включать в образ)
+.env
+deploy/.env
+**/.env.local

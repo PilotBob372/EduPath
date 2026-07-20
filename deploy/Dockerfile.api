@@ -1,0 +1,30 @@
+# ── Stage 1: Build ─────────────────────────────────────────────────────────
+FROM node:22-alpine AS builder
+
+RUN corepack enable && corepack prepare pnpm@9 --activate
+
+WORKDIR /app
+COPY . .
+
+# Install all workspace dependencies
+RUN pnpm install --frozen-lockfile
+
+# Build lib/db TypeScript declarations (required by api-server)
+RUN cd lib/db && pnpm exec tsc -p tsconfig.json
+
+# Build the API server (esbuild bundles everything into dist/)
+RUN pnpm --filter @workspace/api-server run build
+
+# ── Stage 2: Runtime ───────────────────────────────────────────────────────
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy only the bundled output — esbuild includes all deps
+COPY --from=builder /app/artifacts/api-server/dist ./dist
+
+ENV NODE_ENV=production
+ENV PORT=8080
+EXPOSE 8080
+
+CMD ["node", "--enable-source-maps", "./dist/index.mjs"]
