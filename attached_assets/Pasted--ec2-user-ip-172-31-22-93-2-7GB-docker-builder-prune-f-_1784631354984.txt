@@ -1,0 +1,30 @@
+[ec2-user@ip-172-31-22-93 ~]$ # Освобождаем 2.7GB кэша
+docker builder prune -f
+
+# Проверяем что места стало больше
+df -h /
+ID                                              RECLAIMABLE     SIZE            LAST ACCESSED
+t98diu610f1vgeac8rtx7z8i1*                      true            1.068kB         3 hours ago
+duz6ikp4ln6pdb06ryuutpzg3                       true    342.5MB         3 hours ago
+stsg91bff7h7jpieqgd35f382*                      true    879B            3 hours ago
+ovqisby53pqtxuxxb97y554kh*                      true    479B            3 hours ago
+ekyxc5w5itj7m8nzt5pdyscjm                       true    342.5MB         3 hours ago
+jg0iiaxyoui9whrh855py4wpc*                      true    342.5MB         3 hours ago
+33yohwy0kpoc1v12r9hw9ot22*                      true    8.175MB         14 hours ago
+gqdxhwbnyc79yibdf9q07mn2b                       true    847.5kB         14 hours ago
+14k49q7thxj5n50luyra1c2cn*                      true    2.645MB         14 hours ago
+fenksskyj0xk6p016s87eooru*                      true    479B            3 hours ago
+dcam70lppdsgq2wj15a1j1cj5*                      true    342.5MB         3 hours ago
+g144s62humcrpxhuzwd5y4byw                       true    342.5MB         About a minute ago
+hg4nf18wq4czdcmbyie73gbdt                       true    0B              Less than a second ago
+0zg1mym18m0whtpxr499wp6t0                       true    0B              3 seconds ago
+tenebqn9clol0a3p4bkk0ff8b                       true    1.488MB         2 seconds ago
+90j5gj0cjrf5b92w0gj9xv7n5                       true    842.8MB         2 seconds ago
+pxrpumt2npipr2fsgcfay6506                       true    17.56MB         2 seconds ago
+kcrbr9x1il7w4rnrcs1r13fmb                       true    17.56MB         2 seconds ago
+qdksqwrh65so29i318cffhyei                       true    847.5kB         Less than a second ago
+tu01cgzphegz97r83531kfr4g                       true    0B              Less than a second ago
+btpzox4g6i8su3s25wkpemycf                       true    17.56MB         Less than a second ago
+Total:  2.622GB
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p1  8.0G  3.4G  4.7G  42% /

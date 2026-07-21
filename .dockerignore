@@ -25,3 +25,6 @@ deploy/.env
 
 # Certbot (создаётся от root, недоступен для Docker build context)
 deploy/certbot/
+
+# Загруженные файлы (не нужны в образе)
+attached_assets/
