@@ -1,0 +1,38 @@
+(base) sergeitsvetkov@192 EduPath % git pull origin main
+bash deploy/deploy-from-mac.sh
+remote: Enumerating objects: 60, done.
+remote: Counting objects: 100% (56/56), done.
+remote: Compressing objects: 100% (24/24), done.
+remote: Total 45 (delta 22), reused 44 (delta 21), pack-reused 0 (from 0)
+Unpacking objects: 100% (45/45), 53.32 KiB | 2.13 MiB/s, done.
+From https://github.com/PilotBob372/EduPath
+ * branch            main       -> FETCH_HEAD
+   8271e28..bb5ea39  main       -> origin/main
+Updating 8271e28..bb5ea39
+Fast-forward
+ attached_assets/Pasted--ec2-user-ip-172-31-22-93-deploy-docker-compose-env-fil_1784633000688.txt |  25 +++++++++++++++++++++++++
+ attached_assets/Pasted--ec2-user-ip-172-31-22-93-deploy-docker-compose-env-fil_1784633971505.txt |  26 ++++++++++++++++++++++++++
+ attached_assets/image_1784637849588.png                                                          | Bin 0 -> 65440 bytes
+ deploy/deploy-from-mac.sh                                                                        |  32 ++++++++++++++++++++++++++++++++
+ 4 files changed, 83 insertions(+)
+ create mode 100644 attached_assets/Pasted--ec2-user-ip-172-31-22-93-deploy-docker-compose-env-fil_1784633000688.txt
+ create mode 100644 attached_assets/Pasted--ec2-user-ip-172-31-22-93-deploy-docker-compose-env-fil_1784633971505.txt
+ create mode 100644 attached_assets/image_1784637849588.png
+ create mode 100644 deploy/deploy-from-mac.sh
+==> [1/4] Сборка фронтенда локально...
+$ vite build --config vite.config.ts
+✘ [ERROR] Cannot start service: Host version "0.27.3" does not match binary version "0.27.2"
+
+1 error
+failed to load config from /Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/artifacts/edu-consultant/vite.config.ts
+error during build:
+Error: The service was stopped
+    at /Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:603:9)
+    at Socket.afterClose (/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:594:28)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/artifacts/edu-consultant:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @workspace/edu-consultant@0.0.0 build: `vite build --config vite.config.ts`
+Exit status 1
