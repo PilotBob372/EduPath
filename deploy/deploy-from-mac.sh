@@ -27,6 +27,18 @@ if [ -d "$ESBUILD_PNPM" ]; then
   fi
 fi
 
+echo "==> [1b/4] Подготовка rollup для Mac (darwin-arm64)..."
+ROLLUP_PNPM="node_modules/.pnpm/rollup@4.62.2/node_modules/rollup"
+if [ -d "$ROLLUP_PNPM" ]; then
+  npm install --prefix /tmp/rollup-fix @rollup/rollup-darwin-arm64@4.62.2 --no-save --silent 2>/dev/null || true
+  if [ -f "/tmp/rollup-fix/node_modules/@rollup/rollup-darwin-arm64/rollup.darwin-arm64.node" ]; then
+    mkdir -p "$ROLLUP_PNPM/node_modules/@rollup/rollup-darwin-arm64"
+    cp /tmp/rollup-fix/node_modules/@rollup/rollup-darwin-arm64/* \
+       "$ROLLUP_PNPM/node_modules/@rollup/rollup-darwin-arm64/" 2>/dev/null || true
+    echo "    rollup darwin-arm64 установлен."
+  fi
+fi
+
 echo "==> [2/4] Сборка фронтенда локально..."
 PORT=3000 BASE_PATH=/ NODE_ENV=production \
   pnpm --filter @workspace/edu-consultant run build
