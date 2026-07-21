@@ -1,0 +1,35 @@
+(base) sergeitsvetkov@192 EduPath % git pull origin main
+bash deploy/deploy-from-mac.sh
+remote: Enumerating objects: 17, done.
+remote: Counting objects: 100% (16/16), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 9 (delta 6), reused 9 (delta 6), pack-reused 0 (from 0)
+Unpacking objects: 100% (9/9), 2.34 KiB | 266.00 KiB/s, done.
+From https://github.com/PilotBob372/EduPath
+ * branch            main       -> FETCH_HEAD
+   08a5d8a..ce52db8  main       -> origin/main
+Updating 08a5d8a..ce52db8
+Fast-forward
+ attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-git-pull-origin-main-r_1784640321098.txt | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ deploy/deploy-from-mac.sh                                                                        | 12 ++++++------
+ 2 files changed, 65 insertions(+), 6 deletions(-)
+ create mode 100644 attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-git-pull-origin-main-r_1784640321098.txt
+==> [1/4] Подготовка esbuild для Mac...
+==> [2/4] Сборка фронтенда локально...
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+$ vite build --config vite.config.ts
+✘ [ERROR] Cannot start service: Host version "0.27.3" does not match binary version "0.27.2"
+
+1 error
+failed to load config from /Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/artifacts/edu-consultant/vite.config.ts
+error during build:
+Error: The service was stopped
+    at /Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:603:9)
+    at Socket.afterClose (/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:594:28)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/artifacts/edu-consultant:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @workspace/edu-consultant@0.0.0 build: `vite build --config vite.config.ts`
+Exit status 1
