@@ -22,3 +22,6 @@ replit.nix
 .env
 deploy/.env
 **/.env.local
+
+# Certbot (создаётся от root, недоступен для Docker build context)
+deploy/certbot/
