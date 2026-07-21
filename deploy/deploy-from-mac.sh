@@ -11,10 +11,21 @@ EC2_USER="ec2-user"
 SSH_KEY="$HOME/.ssh/EduPath.pem"
 # ──────────────────────────────────────────────────────────
 
-echo "==> [1/4] Подготовка esbuild для Mac..."
-# pnpm-workspace.yaml исключает darwin-биарники (они не нужны на Linux/Replit).
-# Устанавливаем напрямую через npm, минуя workspace-ограничения.
-npm install --no-save @esbuild/darwin-arm64@0.27.3 2>/dev/null || true
+echo "==> [1/4] Подготовка esbuild для Mac (darwin-arm64)..."
+# pnpm-workspace.yaml исключает darwin-биарники (не нужны на Linux/Replit).
+# Скачиваем нужный бинарник через npm и копируем прямо в директорию pnpm-пакета.
+ESBUILD_PNPM="node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild"
+if [ -d "$ESBUILD_PNPM" ]; then
+  npm install --prefix /tmp/esbuild-fix @esbuild/darwin-arm64@0.27.3 --no-save --silent 2>/dev/null || true
+  if [ -f "/tmp/esbuild-fix/node_modules/@esbuild/darwin-arm64/bin/esbuild" ]; then
+    mkdir -p "$ESBUILD_PNPM/node_modules/@esbuild/darwin-arm64/bin"
+    cp /tmp/esbuild-fix/node_modules/@esbuild/darwin-arm64/bin/esbuild \
+       "$ESBUILD_PNPM/node_modules/@esbuild/darwin-arm64/bin/"
+    cp /tmp/esbuild-fix/node_modules/@esbuild/darwin-arm64/package.json \
+       "$ESBUILD_PNPM/node_modules/@esbuild/darwin-arm64/"
+    echo "    esbuild darwin-arm64 установлен."
+  fi
+fi
 
 echo "==> [2/4] Сборка фронтенда локально..."
 pnpm --filter @workspace/edu-consultant run build
