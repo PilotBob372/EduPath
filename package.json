@@ -15,5 +15,11 @@
   "devDependencies": {
     "prettier": "^3.9.5",
     "typescript": "~5.9.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "@esbuild/darwin-arm64": "0.27.3",
+      "@esbuild/darwin-x64": "0.27.3"
+    }
   }
 }
