@@ -1,0 +1,59 @@
+(base) sergeitsvetkov@192 EduPath % git pull origin main
+rm -rf node_modules
+pnpm install
+bash deploy/deploy-from-mac.sh
+remote: Enumerating objects: 18, done.
+remote: Counting objects: 100% (18/18), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 14 (delta 10), reused 14 (delta 10), pack-reused 0 (from 0)
+Unpacking objects: 100% (14/14), 16.74 KiB | 816.00 KiB/s, done.
+From https://github.com/PilotBob372/EduPath
+ * branch            main       -> FETCH_HEAD
+   bb5ea39..008136a  main       -> origin/main
+Updating bb5ea39..008136a
+Fast-forward
+ attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-git-pull-origin-main-b_1784639733115.txt |   38 +++
+ attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-rm-rf-node-modules-pnp_1784639955933.txt |   44 +++
+ attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-rm-rf-node-modules-pnp_1784639971902.txt |   44 +++
+ package.json                                                                                     |    6 +
+ pnpm-lock.yaml                                                                                   | 1780 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 5 files changed, 1698 insertions(+), 214 deletions(-)
+ create mode 100644 attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-git-pull-origin-main-b_1784639733115.txt
+ create mode 100644 attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-rm-rf-node-modules-pnp_1784639955933.txt
+ create mode 100644 attached_assets/Pasted--base-sergeitsvetkov-192-EduPath-rm-rf-node-modules-pnp_1784639971902.txt
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+Scope: all 10 workspace projects
+✓ Lockfile passes supply-chain policies (626 entries in 5.3s)
+artifacts/edu-consultant                 | [WARN] deprecated recharts@2.15.4
+Packages: +476
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 481, reused 476, downloaded 0, added 476, done
+. preinstall$ sh -c 'rm -f package-lock.json yarn.lock; case "$npm_config_user_agent" in pnpm/*) ;; *) echo "Use pnpm instead" >&2; exit 1 ;; esac'
+└─ Done in 9ms
+
+dependencies:
++ @replit/connectors-sdk 0.4.1
+
+devDependencies:
++ prettier 3.9.5 (3.9.6 is available)
++ typescript 5.9.3 (7.0.2 is available)
+
+Done in 11.1s using pnpm v11.15.1
+==> [1/4] Сборка фронтенда локально...
+[WARN] The "pnpm" field in package.json is no longer read by pnpm. The following keys were ignored: "pnpm.overrides". See https://pnpm.io/settings for the new home of each setting.
+$ vite build --config vite.config.ts
+✘ [ERROR] Cannot start service: Host version "0.27.3" does not match binary version "0.27.2"
+
+1 error
+failed to load config from /Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/artifacts/edu-consultant/vite.config.ts
+error during build:
+Error: The service was stopped
+    at /Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:949:34
+    at responseCallbacks.<computed> (/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:603:9)
+    at Socket.afterClose (/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/node_modules/.pnpm/esbuild@0.27.3/node_modules/esbuild/lib/main.js:594:28)
+    at Socket.emit (node:events:521:24)
+    at endReadableNT (node:internal/streams/readable:1729:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+/Users/sergeitsvetkov/Hyperliquid_bot/CCXT_bot/EduPath/artifacts/edu-consultant:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @workspace/edu-consultant@0.0.0 build: `vite build --config vite.config.ts`
+Exit status 1
