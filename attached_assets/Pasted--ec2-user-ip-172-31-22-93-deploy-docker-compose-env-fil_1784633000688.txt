@@ -1,0 +1,25 @@
+[ec2-user@ip-172-31-22-93 deploy]$ docker-compose --env-file .env build web && docker-compose --env-file .env up -d --force-recreate web
+WARN[0000] /home/ec2-user/edupath/deploy/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion 
+[+] Building 56.7s (11/14)                                                                                                                                                                            
+ => [internal] load local bake definitions                                                                                                                                                       0.0s
+ => => reading from stdin 884B                                                                                                                                                                   0.0s
+ => [internal] load build definition from Dockerfile.web                                                                                                                                         0.0s
+ => => transferring dockerfile: 981B                                                                                                                                                             0.0s
+ => [internal] load metadata for docker.io/library/node:22-alpine                                                                                                                                0.0s
+ => [internal] load metadata for docker.io/library/nginx:1.27-alpine                                                                                                                             0.4s
+ => [internal] load .dockerignore                                                                                                                                                                0.0s
+ => => transferring context: 580B                                                                                                                                                                0.0s
+ => CACHED [builder 1/6] FROM docker.io/library/node:22-alpine                                                                                                                                   0.0s
+ => [internal] load build context                                                                                                                                                               15.4s
+ => => transferring context: 349.89MB                                                                                                                                                           15.3s
+ => [stage-1 1/2] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10                                                               0.0s
+ => [builder 2/6] RUN corepack enable && corepack prepare pnpm@9 --activate                                                                                                                      3.6s
+ => [builder 3/6] WORKDIR /app                                                                                                                                                                   0.1s 
+ => [builder 4/6] COPY . .                                                                                                                                                                      28.4s
+ => [builder 5/6] RUN pnpm install --no-frozen-lockfile                                                                                                                                          8.4s
+ => => # Progress: resolved 51, reused 0, downloaded 51, added 0                                                                                                                                     
+ => => # artifacts/edu-consultant                 |  WARN  deprecated recharts@2.15.4                                                                                                                
+ => => # Progress: resolved 75, reused 0, downloaded 75, added 0                                                                                                                                     
+ => => # Progress: resolved 76, reused 0, downloaded 76, added 0                                                                                                                                     
+ => => # Progress: resolved 77, reused 0, downloaded 77, added 0                                                                                                                                     
+ => => # Progress: resolved 89, reused 0, downloaded 89, added 0   
