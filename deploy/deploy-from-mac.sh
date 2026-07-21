@@ -28,7 +28,8 @@ if [ -d "$ESBUILD_PNPM" ]; then
 fi
 
 echo "==> [2/4] Сборка фронтенда локально..."
-pnpm --filter @workspace/edu-consultant run build
+PORT=3000 BASE_PATH=/ NODE_ENV=production \
+  pnpm --filter @workspace/edu-consultant run build
 
 echo "==> [3/4] Загрузка файлов на EC2..."
 rsync -az --delete \
